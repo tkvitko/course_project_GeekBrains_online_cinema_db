@@ -1,6 +1,6 @@
 /* Представления контента в сочетании с типом
 */
-CREATE OR REPLACE VIEW content_with_types AS
+CREATE OR REPLACE VIEW v_content_with_types AS
 	SELECT c.id as content_id, c.name as name, ct.name as type_name
 	FROM content c
 	JOIN content_types ct ON c.content_type_id = ct.id;
@@ -8,7 +8,7 @@ CREATE OR REPLACE VIEW content_with_types AS
 
 /* Представление пользователя в сочетании с его активными подписками
  */
-CREATE OR REPLACE VIEW user_subscriptions AS
+CREATE OR REPLACE VIEW v_user_subscriptions AS
 	SELECT u.id, u.login , pc.name 
 	FROM users u
 	JOIN user_products up ON u.id = up.user_id 
@@ -18,7 +18,7 @@ CREATE OR REPLACE VIEW user_subscriptions AS
 
 /* Представление среднего рейтинга контента
  */
-CREATE OR REPLACE VIEW content_rating_avg AS
+CREATE OR REPLACE VIEW v_content_rating_avg AS
 	SELECT content_id, AVG(rating)
 	FROM content_rating
 	GROUP BY content_id
@@ -28,8 +28,8 @@ CREATE OR REPLACE VIEW content_rating_avg AS
  */
 
 DELIMITER //
-DROP TRIGGER IF EXISTS check_content_type_on_product_insert//
-CREATE TRIGGER check_content_type_on_product_insert BEFORE INSERT ON content
+DROP TRIGGER IF EXISTS t_check_content_type_on_product_insert//
+CREATE TRIGGER t_check_content_type_on_product_insert BEFORE INSERT ON content
 FOR EACH ROW
 BEGIN
 	IF NEW.content_type_id IS NULL THEN
@@ -37,8 +37,8 @@ BEGIN
   	END IF;
 END//
 
-DROP TRIGGER IF EXISTS check_content_type_on_product_update//
-CREATE TRIGGER check_content_type_on_product_update BEFORE UPDATE ON content
+DROP TRIGGER IF EXISTS t_check_content_type_on_product_update//
+CREATE TRIGGER t_check_content_type_on_product_update BEFORE UPDATE ON content
 FOR EACH ROW
 BEGIN
 	IF NEW.content_type_id IS NULL THEN
@@ -51,8 +51,8 @@ END//
  */
 
 DELIMITER //
-DROP TRIGGER IF EXISTS check_content_rating_insert//
-CREATE TRIGGER check_content_rating_insert BEFORE INSERT ON content_rating
+DROP TRIGGER IF EXISTS t_check_content_rating_insert//
+CREATE TRIGGER t_check_content_rating_insert BEFORE INSERT ON content_rating
 FOR EACH ROW
 BEGIN
 	IF NEW.rating > 10 THEN
@@ -60,8 +60,8 @@ BEGIN
   	END IF;
 END//
 
-DROP TRIGGER IF EXISTS check_content_rating_update//
-CREATE TRIGGER check_content_rating_update BEFORE UPDATE ON content_rating
+DROP TRIGGER IF EXISTS t_check_content_rating_update//
+CREATE TRIGGER t_check_content_rating_update BEFORE UPDATE ON content_rating
 FOR EACH ROW
 BEGIN
 	IF NEW.rating > 10 THEN
@@ -75,8 +75,8 @@ END//
 
 DELIMITER $
 
-DROP PROCEDURE IF EXISTS available_content$
-CREATE PROCEDURE available_content(_user_id BIGINT)
+DROP PROCEDURE IF EXISTS proc_available_content$
+CREATE PROCEDURE proc_available_content(_user_id BIGINT)
 BEGIN
 	SELECT c.name, filename, release_year, c.description, p.name as package
 	FROM content c 
@@ -88,7 +88,7 @@ BEGIN
 END$
 DELIMITER ;
 
-CALL available_content (1);
+CALL proc_available_content(1);
 
 
 /* Процедура для рассчета суммы абонентской платы пользователю
@@ -96,8 +96,8 @@ CALL available_content (1);
 
 DELIMITER $
 
-DROP PROCEDURE IF EXISTS monthly_payment$
-CREATE PROCEDURE monthly_payment(_user_id BIGINT)
+DROP PROCEDURE IF EXISTS proc_monthly_payment$
+CREATE PROCEDURE proc_monthly_payment(_user_id BIGINT)
 BEGIN
 	SELECT SUM(price) as payment
 	FROM products p 
@@ -106,10 +106,27 @@ BEGIN
 END$
 DELIMITER ;
 
-CALL monthly_payment (1);
+CALL proc_monthly_payment(1);
 
 
+/* Процедура получения список пакетов с ценой, подписка на которые даст доступ к конкретному контенту
+*/
 
+DELIMITER $
+
+DROP PROCEDURE IF EXISTS proc_packages_to_get_content_by$
+CREATE PROCEDURE proc_packages_to_get_content_by(_content_id BIGINT)
+BEGIN
+	SELECT c.name as content, p.name as package, pr.price 
+	FROM products pr
+	JOIN packages p ON pr.package_id = p.id 
+	JOIN package_contents pc ON p.id = pc.package_id
+	JOIN content c ON c.id = pc.content_id 
+	WHERE c.id = _content_id;
+END$
+DELIMITER ;
+
+CALL proc_packages_to_get_content_by(1);
 
 
 	
