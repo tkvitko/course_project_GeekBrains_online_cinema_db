@@ -163,6 +163,31 @@ INSERT INTO `series_episodes` VALUES
 ('10','9','7','3'),
 ('10','10','7','4'); 
 
+
+/*
+ * Рейтинг контента
+ */
+
+DROP TABLE IF EXISTS content_rating;
+CREATE TABLE content_rating(
+	content_id BIGINT UNSIGNED NOT NULL,
+	user_id BIGINT UNSIGNED NOT NULL,
+    rating TINYINT UNSIGNED DEFAULT 0,
+    
+    FOREIGN KEY (content_id) REFERENCES content(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    INDEX content_id_idx(content_id)
+
+);
+
+INSERT INTO content_rating VALUES
+(1, 1, 5),
+(1, 2, 10),
+(1, 3, 7),
+(2, 1, 6),
+(2, 2, 10),
+(2, 3, 8);
+
 /*
  * Персоны
  */

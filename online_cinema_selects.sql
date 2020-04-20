@@ -1,22 +1,3 @@
-/* Список фильмов, доступный пользователю для просмотра (в рамках действующих подписок)
-*/
-SELECT c.name, filename, release_year, c.description, p.name
-	FROM content c 
-	JOIN package_contents pc ON c.id = pc.content_id 
-	JOIN packages p ON p.id = pc.package_id 
-	JOIN products pr ON pr.package_id = p.id 
-	JOIN user_products up ON up.product_id = pr.id 
-	WHERE up.user_id = 1
-	
-	
-/* Сумма абонентской платы пользователя
-*/
-SELECT SUM(price)
-	FROM products p 
-	JOIN user_products up ON p.id = up.product_id 
-	WHERE up.user_id = 1
-	
-	
 /* Контент по популярности (количество пользователей, которым он доступен)
 */	
 SELECT count(*) cnt, c.name
