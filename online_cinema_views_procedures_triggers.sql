@@ -129,5 +129,22 @@ DELIMITER ;
 CALL proc_packages_to_get_content_by(1);
 
 
+/* Процедура для полученя истории просмотров для пользователя с закладками
+ */
+
+DELIMITER $
+
+DROP PROCEDURE IF EXISTS proc_wathes_history_for_user$
+CREATE PROCEDURE proc_wathes_history_for_user(_user_id BIGINT)
+BEGIN
+	SELECT c.name, wh.bookmark 
+	FROM watches_history wh 
+	JOIN content c ON c.id = wh.content_id 
+	WHERE wh.user_id = _user_id;
+END$
+DELIMITER ;
+
+CALL proc_wathes_history_for_user(1);
+
 	
 	

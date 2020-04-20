@@ -188,6 +188,31 @@ INSERT INTO content_rating VALUES
 (2, 2, 10),
 (2, 3, 8);
 
+
+/*
+ * История просмотров контента пользователями
+ */
+
+DROP TABLE IF EXISTS watches_history;
+CREATE TABLE watches_history(
+	content_id BIGINT UNSIGNED NOT NULL,
+	user_id BIGINT UNSIGNED NOT NULL,
+    bookmark SMALLINT UNSIGNED DEFAULT 0,
+    
+    FOREIGN KEY (content_id) REFERENCES content(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    INDEX user_id_idx(user_id)
+
+);
+
+INSERT INTO watches_history VALUES
+(1, 1, 60),
+(1, 2, 90),
+(1, 3, 40),
+(2, 1, 45),
+(2, 2, 65),
+(2, 3, 80);
+
 /*
  * Персоны
  */

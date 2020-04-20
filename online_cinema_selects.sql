@@ -50,9 +50,13 @@ SELECT count(*) ep_cnt, c.name
 	
 /* Контент с типами (запрос к представлению)
 */
-SELECT * FROM content_with_types
+SELECT * FROM v_content_with_types
 
 /* Подписки пользователей (запрос к представлению)
  */
-SELECT * FROM user_subscriptions
+SELECT * FROM v_user_subscriptions
+
+/* Средний рейтинг контента (запрос к представлению)
+ */
+SELECT * FROM v_content_rating_avg
 
