@@ -1,4 +1,4 @@
-/* Контент по популярности (количество пользователей, которым он доступен)
+/* Content by popularity (number of users that if avaliable for)
 */	
 SELECT count(*) cnt, c.name
 	FROM content c 
@@ -10,7 +10,7 @@ SELECT count(*) cnt, c.name
 	ORDER BY cnt DESC
 	
 	
-/* Пакеты по популярности (количество подписчиков)
+/* Packages by popularity (by number of subscribers)
 */
 SELECT count(*) cnt, p.name
 	FROM packages p
@@ -20,7 +20,7 @@ SELECT count(*) cnt, p.name
 	ORDER BY cnt DESC
 	
 	
-/* Персоны, встречающиеся в большинстве контента
+/* Persons featured in most content
 */
 SELECT count(*) cnt, pers.name
 	FROM persons pers
@@ -30,7 +30,7 @@ SELECT count(*) cnt, pers.name
 	ORDER BY cnt DESC
 	
 	
-/* Контент, в котором участвует конкретная персона
+/* Content that involves a specific person
 */
 SELECT c.name, p.name 
 	FROM content c
@@ -39,7 +39,7 @@ SELECT c.name, p.name
 	WHERE person_id = 1
 	
 	
-/* Сериалы по количеству серий
+/* Series by episodes number
 */
 SELECT count(*) ep_cnt, c.name
 	FROM content c
@@ -48,15 +48,15 @@ SELECT count(*) ep_cnt, c.name
 	GROUP BY c.name
 	ORDER BY ep_cnt DESC
 	
-/* Контент с типами (запрос к представлению)
+/* Content with types (request to view)
 */
 SELECT * FROM v_content_with_types
 
-/* Подписки пользователей (запрос к представлению)
+/* User's subscriptions (request to view)
  */
 SELECT * FROM v_user_subscriptions
 
-/* Средний рейтинг контента (запрос к представлению)
+/* Average raiting of the content (request to view)
  */
 SELECT * FROM v_content_rating_avg
 

@@ -1,4 +1,4 @@
-/* Представления контента в сочетании с типом
+/* View of the content with it type
 */
 CREATE OR REPLACE VIEW v_content_with_types AS
 	SELECT c.id as content_id, c.name as name, ct.name as type_name
@@ -6,7 +6,7 @@ CREATE OR REPLACE VIEW v_content_with_types AS
 	JOIN content_types ct ON c.content_type_id = ct.id;
 	
 
-/* Представление пользователя в сочетании с его активными подписками
+/* View of a user with his subscriptions
  */
 CREATE OR REPLACE VIEW v_user_subscriptions AS
 	SELECT u.id, u.login , pc.name 
@@ -16,7 +16,7 @@ CREATE OR REPLACE VIEW v_user_subscriptions AS
 	JOIN packages pc ON pc.id = pr.package_id;
 
 
-/* Представление среднего рейтинга контента
+/* View of average rating
  */
 CREATE OR REPLACE VIEW v_content_rating_avg AS
 	SELECT content_id, AVG(rating)
@@ -24,7 +24,7 @@ CREATE OR REPLACE VIEW v_content_rating_avg AS
 	GROUP BY content_id
 
 
-/* Триггер, добавляющий дефолтный тип контента при добавлении/редактировании контента без указания типа
+/* Trigger, that adds default content type in case of adding/editing content without type
  */
 
 DELIMITER //
@@ -47,7 +47,7 @@ BEGIN
 END//
 
 
-/* Триггер, ставящий рейтинг контенту 10, если был передан рейтинг больше 10
+/* Trigger, setting rating to 10 in case of rating is more that 10
  */
 
 DELIMITER //
@@ -70,7 +70,7 @@ BEGIN
 END//
 
 
-/* Процедура для поиска контента, доступного пользователю
+/* Procedure of serching content available to user
  */
 
 DELIMITER $
@@ -91,7 +91,7 @@ DELIMITER ;
 CALL proc_available_content(1);
 
 
-/* Процедура для рассчета суммы абонентской платы пользователю
+/* Procedure to count summary payment for user
  */
 
 DELIMITER $
@@ -109,7 +109,7 @@ DELIMITER ;
 CALL proc_monthly_payment(1);
 
 
-/* Процедура получения список пакетов с ценой, подписка на которые даст доступ к конкретному контенту
+/* Procedure to get packages list, subscription to which will make available some content
 */
 
 DELIMITER $
@@ -129,7 +129,7 @@ DELIMITER ;
 CALL proc_packages_to_get_content_by(1);
 
 
-/* Процедура для полученя истории просмотров для пользователя с закладками
+/* Procedure to get content viewing history with bookmarks for user
  */
 
 DELIMITER $

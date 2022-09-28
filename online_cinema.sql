@@ -1,22 +1,10 @@
 /*
-1.+ Составить общее текстовое описание БД и решаемых ею задач;
-2.+ минимальное количество таблиц - 10;
-3.+ скрипты создания структуры БД (с первичными ключами, индексами, внешними ключами);
-4.+ создать ERDiagram для БД;
-5.+ скрипты наполнения БД данными;
-6.+ скрипты характерных выборок (включающие группировки, JOIN'ы, вложенные таблицы);
-7.+ представления (минимум 2);
-8.+ хранимые процедуры / триггеры;
- */
-
-/*
-База данных онлайн-кинотеатра.
-Пользователи регистрируются на сервисе, оплачивают подписку на пакеты контента и могут смотреть его неограниченно 
-на протяжении биллингового цикла.
-Контент - фильмы, сериалы (состоящие из серий) и выпуски передач.
-Контент содержит так же персон в определенных ролях 
-(одна и та же персона может иметь разные роли - актер, режиссер - в разных фильмах).
-Контент разложен по пакетам. Пакет + период = продукт (с ценой), который пользователь может купить.
+Here you can find the dababase for online cinema.
+End user can sign up to the service, pay the subscription and watch the content during paid period without limitations.
+Content represents movies, series (consisting of episodes) and tv shows.
+There are persons in different roles in each of the content.
+One person can play different roles (an actor, a creator) in different movies.
+Content is divided into packages. Package and period form a product (with price), that can be pirchsed by a user.
  */
 
 DROP DATABASE IF EXISTS cinema;
@@ -24,7 +12,7 @@ CREATE DATABASE cinema;
 USE cinema;
 
 /*
- * Пользователи сервиса
+ * End users
  */
 
 DROP TABLE IF EXISTS users;
@@ -54,7 +42,7 @@ INSERT INTO `users` VALUES
 ('10','cat@test.ru','2020-02-11 03:07:49','Alysa','Schimmel','f','1979-03-16'); 
 
 /*
- * Типы контента
+ * Content types
  */
 
 DROP TABLE IF EXISTS content_types;
@@ -72,7 +60,7 @@ VALUES 	('movie'),
 		('tvshow'); 
 
 /*
- * Типы персон
+ * Person types
  */
 
 DROP TABLE IF EXISTS person_types;
@@ -90,7 +78,7 @@ VALUES 	('actor'),
 		('screenwriter'); 
 
 /*
- * Контент
+ * Content
  */
 
 DROP TABLE IF EXISTS content;
@@ -133,7 +121,7 @@ INSERT INTO `content` VALUES
 
 
 /*
- * Эпизоды, входящие в сериалы
+ * Episodes, included in the series
  */
 
 DROP TABLE IF EXISTS series_episodes;
@@ -165,7 +153,7 @@ INSERT INTO `series_episodes` VALUES
 
 
 /*
- * Рейтинг контента
+ * Content rating
  */
 
 DROP TABLE IF EXISTS content_rating;
@@ -190,7 +178,7 @@ INSERT INTO content_rating VALUES
 
 
 /*
- * История просмотров контента пользователями
+ * Content viewing history by users
  */
 
 DROP TABLE IF EXISTS watches_history;
@@ -214,7 +202,7 @@ INSERT INTO watches_history VALUES
 (2, 3, 80);
 
 /*
- * Персоны
+ * Persons
  */
 
 DROP TABLE IF EXISTS persons;
@@ -253,7 +241,7 @@ INSERT INTO `persons` VALUES
 ('20','corrupti','1997-10-20 09:41:33','2012-03-15','Dolores nam illo recusandae quo qui officia. Voluptatum distinctio vitae quia minus et laborum dolore. Quo sunt ea sint mollitia qui. Sapiente omnis aperiam rerum sit quisquam odio.'); 
 
 /*
- * Персоны контента
+ * Persons, involved in content
  */
 
 DROP TABLE IF EXISTS content_persons;
@@ -298,7 +286,7 @@ INSERT INTO `content_persons` VALUES
 ('20','20','4','2009-09-26 08:13:34'); 
 
 /*
- * Пакеты
+ * Packages
  */
 
 DROP TABLE IF EXISTS packages;
@@ -318,7 +306,7 @@ INSERT INTO `packages` VALUES
 ('4','Classic','1995-03-09 14:11:21','Quis similique sed nobis. Optio ea dolore et aperiam. Esse in voluptas aut est aut voluptatem expedita. Repellat velit soluta reprehenderit sit vel.'); 
 
 /*
- * Принадлежность контента пакету
+ * Content belonging to a package
  */
 
 DROP TABLE IF EXISTS package_contents;
@@ -356,7 +344,7 @@ INSERT INTO `package_contents` VALUES
 ('4','20','1997-02-20 07:15:49'); 
 
 /*
- * Периоды оплаты
+ * Payment periods
  */
 
 DROP TABLE IF EXISTS payment_periods;
@@ -374,7 +362,7 @@ VALUES ('day'),
 ('year'); 
 
 /*
- * Продукты (пакет + период + цена)
+ * Products (package + period + price)
  */
 
 DROP TABLE IF EXISTS products;
@@ -403,7 +391,7 @@ INSERT INTO `products` VALUES
 ('9','1','1','599','2017-07-02 22:00:02'); 
 
 /*
- * Владение продуктом абонента (по итогам покупки)
+ * Products ownership by users (after purchase)
  */
 
 DROP TABLE IF EXISTS user_products;
